@@ -3,6 +3,7 @@ import { Router } from 'express';
 import User from '../../models/user';
 import authService from '../../services/auth-service';
 import userService from '../../services/user-service';
+import locationService from '../../services/location-service';
 
 const router = Router();
 
@@ -49,7 +50,7 @@ function register(req, res) {
   const newUser = new User({ mobile, password, cep });
 
   userService.findByMobile(mobile).then(() => new Promise((resolve, reject) => {
-    userService.getLocationByCep(newUser.cep).then((location) => {
+    locationService.getLocationByCep(cep).then((location) => {
       newUser.location = {
         coordinates: location,
       };
@@ -59,12 +60,14 @@ function register(req, res) {
 
         resolve(newUser);
       });
-    }).then(() => {
-      res.status(201).end();
-    }).catch((error) => {
-      res.status(500).send(error);
-    });
-  }));
+    }).catch(() => {});
+  }).then((fodaci) => {
+    console.log('fodace');
+    console.log(fodaci);
+    res.status(201).json({ msg: 'created with sucess' });
+  }).catch((error) => {
+    res.status(500).send(error);
+  })).catch(() => {});
   return undefined;
 }
 
