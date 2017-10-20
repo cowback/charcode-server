@@ -38,7 +38,7 @@ function register(req, res) {
   req.checkBody('mobile', 'Invalid phone number').isLength({ min: 11 });
   req.checkBody('password', 'Password cannot be empty').notEmpty();
   req.checkBody('cep', 'CEP cannot be empty').notEmpty();
-  req.checkBody('cep', 'CEP inválid').isLength({ min: 8 });
+  req.checkBody('cep', 'Invalid CEP').isLength({ min: 8 });
 
   const errors = req.validationErrors();
   if (errors) {
