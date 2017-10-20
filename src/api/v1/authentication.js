@@ -49,25 +49,27 @@ function register(req, res) {
   const { mobile, password, cep } = req.body;
   const newUser = new User({ mobile, password, cep });
 
-  userService.findByMobile(mobile).then(() => new Promise((resolve, reject) => {
-    locationService.getLocationByCep(cep).then((location) => {
+  userService.findByMobile(mobile).then(locationService.getLocationByCep(cep))
+    .then((coordinates) => {
       newUser.location = {
-        coordinates: location,
+        coordinates,
       };
 
-      newUser.save((err) => {
+      return newUser;
+    }).then(user => new Promise((resolve, reject) => {
+      user.save((err) => {
         if (err) reject(err);
 
         resolve(newUser);
       });
-    }).catch(() => {});
-  }).then((fodaci) => {
-    console.log('fodace');
-    console.log(fodaci);
-    res.status(201).json({ msg: 'created with sucess' });
-  }).catch((error) => {
-    res.status(500).send(error);
-  })).catch(() => {});
+    }))
+    .then(() => {
+      res.status(201).end();
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+
   return undefined;
 }
 
