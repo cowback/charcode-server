@@ -9,7 +9,7 @@ const router = Router();
 
 function login(req, res) {
   req.checkBody('mobile', 'Please, use a valid phone number').isLength({ min: 11 });
-  req.checkBody('password', 'Password have at least 8 digits').isLength({ min: 8 });
+  req.checkBody('password', 'Password cannot be empty').notEmpty();
 
   const errors = req.validationErrors();
   if (errors) {

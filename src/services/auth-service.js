@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 
-const { SECURITY_SECRET, TOKEN_DURATION } = process.env;
 const secondsInHour = 3600;
 
 /**
@@ -17,12 +16,11 @@ function calculateExpirationTime(tokenDuration) {
  * @param {User} user id, name, email and roles of user
  * @returns {string}
  */
-function createToken({ _id, name, email, roles }) {
+function createToken({ _id }) {
+  const { SECURITY_SECRET, TOKEN_DURATION } = process.env;
+
   const tokenUser = {
     id: _id,
-    name,
-    email,
-    roles,
   };
 
   const tokenConfig = {
@@ -38,6 +36,8 @@ function createToken({ _id, name, email, roles }) {
  * @returns {Promise<string>}
  */
 function verifyToken(token) {
+  const { SECURITY_SECRET } = process.env;
+
   return new Promise((resolve, reject) => {
     jwt.verify(token, SECURITY_SECRET, (err, decoded) => {
       if (err) reject(err);
