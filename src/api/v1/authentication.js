@@ -47,10 +47,10 @@ function register(req, res) {
   const newUser = new User({ mobile, password });
 
   userService.findByMobile(newUser.mobile).then(user => new Promise((resolve, reject) => {
-    // const userLatLng = userService.getLocationByCep(newUser.cep);
+    const userLatLng = userService.getLocationByCep(newUser.cep);
 
     newUser.location = {
-      coordinates: [],
+      coordinates: userLatLng,
     };
 
     newUser.save((err) => {
