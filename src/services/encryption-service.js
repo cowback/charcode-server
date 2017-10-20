@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt-nodejs';
 
-const rounds = 16;
+const rounds = 2;
 /**
  * Create a hash of a value with a given salt
  * @param {string} value value to be encrypted

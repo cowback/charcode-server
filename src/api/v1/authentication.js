@@ -49,11 +49,13 @@ function register(req, res) {
   const { mobile, password, cep } = req.body;
   const newUser = new User({ mobile, password, cep });
 
-  userService.findByMobile(mobile).then(locationService.getLocationByCep(cep))
+  locationService.getLocationByCep(cep)
     .then((coordinates) => {
-      newUser.location = {
-        coordinates,
-      };
+      if (coordinates != null) {
+        newUser.location = {
+          coordinates: [coordinates.lat, coordinates.lng],
+        };
+      }
 
       return newUser;
     }).then(user => new Promise((resolve, reject) => {
@@ -67,7 +69,11 @@ function register(req, res) {
       res.status(201).end();
     })
     .catch((error) => {
-      res.status(500).send(error);
+      if (error.name === 'MongoError' && error.code === 11000) {
+        return res.status(400).json({ msg: 'Cellphone alredy exists' });
+      }
+
+      return res.status(500).send(error);
     });
 
   return undefined;
