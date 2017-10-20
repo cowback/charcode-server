@@ -37,33 +37,34 @@ function register(req, res) {
   req.checkBody('mobile', 'Phone cannot to be empty').notEmpty();
   req.checkBody('mobile', 'Invalid phone number').isLength({ min: 11 });
   req.checkBody('password', 'Password cannot be empty').notEmpty();
+  req.checkBody('cep', 'CEP cannot be empty').notEmpty();
+  req.checkBody('cep', 'CEP inválid').isLength({ min: 8 });
 
   const errors = req.validationErrors();
   if (errors) {
     return res.status(400).send(errors);
   }
 
-  const { mobile, password } = req.body;
-  const newUser = new User({ mobile, password });
+  const { mobile, password, cep } = req.body;
+  const newUser = new User({ mobile, password, cep });
 
-  userService.findByMobile(newUser.mobile).then(() => new Promise((resolve, reject) => {
-    const userLatLng = userService.getLocationByCep(newUser.cep);
+  userService.findByMobile(mobile).then(() => new Promise((resolve, reject) => {
+    userService.getLocationByCep(newUser.cep).then((location) => {
+      newUser.location = {
+        coordinates: location,
+      };
 
-    newUser.location = {
-      coordinates: userLatLng,
-    };
+      newUser.save((err) => {
+        if (err) reject(err);
 
-    newUser.save((err) => {
-      if (err) reject(err);
-
-      resolve(newUser);
+        resolve(newUser);
+      });
+    }).then(() => {
+      res.status(201).end();
+    }).catch((error) => {
+      res.status(500).send(error);
     });
-  })).then(() => {
-    res.status(201).end();
-  }).catch((error) => {
-    res.status(500).send(error);
-  });
-
+  }));
   return undefined;
 }
 
