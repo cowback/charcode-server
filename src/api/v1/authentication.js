@@ -18,7 +18,7 @@ function login(req, res) {
   const { mobile, password } = req.body;
   const user = new User({ mobile, password });
 
-  userService.findByPhone(user.mobile).then(userFind => new Promise((resolve, reject) => {
+  userService.findByMobile(user.mobile).then(userFind => new Promise((resolve, reject) => {
     userFind.comparePassword(user.password, (err, match) => {
       if (err) reject(err);
       if (!match) reject(new Error('The passwords do not match'));
