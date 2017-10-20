@@ -7,8 +7,7 @@ import userService from '../../services/user-service';
 const router = Router();
 
 function login(req, res) {
-  // TODO: Adicionar outras validações
-  req.checkBody('mobile', 'Please, use a valid email').is();
+  req.checkBody('mobile', 'Please, use a valid phone number').isLength({ min: 11 });
   req.checkBody('password', 'Password have at least 8 digits').isLength({ min: 8 });
 
   const errors = req.validationErrors();
@@ -16,10 +15,10 @@ function login(req, res) {
     res.status(400).send(errors);
   }
 
-  const { email, password } = req.body;
-  const user = new User({ email, password });
+  const { mobile, password } = req.body;
+  const user = new User({ mobile, password });
 
-  userService.findByEmail(user.email).then(userFind => new Promise((resolve, reject) => {
+  userService.findByPhone(user.mobile).then(userFind => new Promise((resolve, reject) => {
     userFind.comparePassword(user.password, (err, match) => {
       if (err) reject(err);
       if (!match) reject(new Error('The passwords do not match'));
@@ -35,9 +34,8 @@ function login(req, res) {
 }
 
 function register(req, res) {
-  // TODO: Adicionar outras validações
-  req.checkBody('name', 'Name cannot be empty').notEmpty();
-  req.checkBody('email', 'Please, use a valid email').notEmpty().isEmail();
+  req.checkBody('mobile', 'Phone cannot to be empty').notEmpty();
+  req.checkBody('mobile', 'Invalid phone number').isLength({ min: 11 });
   req.checkBody('password', 'Password cannot be empty').notEmpty();
 
   const errors = req.validationErrors();
@@ -45,10 +43,16 @@ function register(req, res) {
     return res.status(400).send(errors);
   }
 
-  const { name, email, password } = req.body;
-  const newUser = new User({ name, email, password });
+  const { mobile, password } = req.body;
+  const newUser = new User({ mobile, password });
 
-  userService.findByEmail(newUser.email).then(user => new Promise((resolve, reject) => {
+  userService.findByMobile(newUser.mobile).then(user => new Promise((resolve, reject) => {
+    // const userLatLng = userService.getLocationByCep(newUser.cep);
+
+    newUser.location = {
+      coordinates: [],
+    };
+
     newUser.save((err) => {
       if (err) reject(err);
 

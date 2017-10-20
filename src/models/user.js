@@ -11,6 +11,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  cep: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: { type: String, default: 'Point' },
+    coordinates: [Number],
+  },
 }, { minimize: false });
 
 userSchema.pre('save', function preSafe(next) {
