@@ -46,7 +46,7 @@ function register(req, res) {
   const { mobile, password } = req.body;
   const newUser = new User({ mobile, password });
 
-  userService.findByMobile(newUser.mobile).then(user => new Promise((resolve, reject) => {
+  userService.findByMobile(newUser.mobile).then(() => new Promise((resolve, reject) => {
     const userLatLng = userService.getLocationByCep(newUser.cep);
 
     newUser.location = {
@@ -56,10 +56,10 @@ function register(req, res) {
     newUser.save((err) => {
       if (err) reject(err);
 
-      resolve(user);
+      resolve(newUser);
     });
-  })).then((user) => {
-    res.status(201).json({ user });
+  })).then(() => {
+    res.status(201).end();
   }).catch((error) => {
     res.status(500).send(error);
   });
