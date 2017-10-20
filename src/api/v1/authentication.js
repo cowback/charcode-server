@@ -8,7 +8,7 @@ const router = Router();
 
 function login(req, res) {
   // TODO: Adicionar outras validações
-  req.checkBody('email', 'Please, use a valid email').isEmail();
+  req.checkBody('mobile', 'Please, use a valid email').is();
   req.checkBody('password', 'Password have at least 8 digits').isLength({ min: 8 });
 
   const errors = req.validationErrors();
@@ -59,6 +59,8 @@ function register(req, res) {
   }).catch((error) => {
     res.status(500).send(error);
   });
+
+  return undefined;
 }
 
 router.route('/signin').post(login);

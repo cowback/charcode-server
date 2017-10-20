@@ -1,13 +1,13 @@
 import User from '../models/user';
 
 /**
- * Filter user by email in the database
- * @param {string} email email filter
+ * Filter user by mobile in the database
+ * @param {string} mobile mobile filter
  * @returns {Promise<User>}
  */
-function findByEmail(email) {
+function findByMobile(mobile) {
   return new Promise((resolve, reject) => {
-    User.findOne({ email }, (err, user) => {
+    User.findOne({ mobile }, (err, user) => {
       if (err) reject(err);
 
       resolve(user);
@@ -30,6 +30,6 @@ function listAll() {
 }
 
 export default {
-  findByEmail,
+  findByMobile,
   listAll,
 };

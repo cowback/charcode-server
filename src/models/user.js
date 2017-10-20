@@ -2,10 +2,7 @@ import mongoose from 'mongoose';
 import encryptionService from '../services/encryption-service';
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-  },
-  email: {
+  mobile: {
     type: String,
     required: true,
     unique: true,
@@ -13,14 +10,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-  status: {
-    type: Boolean,
-    default: true,
   },
 }, { minimize: false });
 
