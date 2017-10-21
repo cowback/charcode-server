@@ -5,7 +5,7 @@ import userService from '../../services/user-service';
 function verifyToken(req, res) {
   const token = req.get('authorization');
   authService.verifyToken(token).then(() => {
-    res.status(200).end();
+    res.status(200).json({ msg: 'Valid Token!' });
   }).catch((err) => {
     res.status(401).json(err);
   });
