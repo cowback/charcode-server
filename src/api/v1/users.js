@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import User from '../../models/user';
 import userService from '../../services/user-service';
+import darkSkyService from '../../services/dark-sky-service';
+import weatherService from '../../services/weather-service';
 import locationService from '../../services/location-service';
 
 const router = Router();
@@ -10,6 +12,26 @@ function listAll(req, res) {
     res.json(users);
   }).catch((error) => {
     res.status(400).send(error);
+  });
+}
+
+function obtainRegisteredLocationStatus(req, res) {
+  const { id } = req.user;
+  userService.findById(id).then((user) => {
+    const { coordinates } = user.location;
+    const [latitude, longitude] = coordinates;
+
+    return darkSkyService.forecast(latitude, longitude, {
+      exclude: 'minutely,hourly,flags',
+      lang: 'pt',
+      units: 'si',
+    });
+  }).then((forecast) => {
+    const result = weatherService.analyze(forecast.data);
+
+    res.json(result);
+  }).catch(() => {
+    res.status(404).end();
   });
 }
 
@@ -61,5 +83,8 @@ function register(req, res) {
 router.route('/user')
   .get(listAll)
   .post(register);
+
+router.route('/user/status')
+  .get(obtainRegisteredLocationStatus);
 
 export default router;
