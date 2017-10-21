@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv-safe';
 import configExpress from './config/express';
 import configDatabase from './config/database';
+import configWebPush from './config/web-push';
 import router from './api/index';
 
 dotenv.config();
@@ -12,6 +13,8 @@ configExpress(app);
 /* eslint-disable object-curly-newline */
 const { DB_BASE, DB_HOST, DB_USER, DB_PWD } = process.env;
 configDatabase.connectToDatabase(DB_BASE, DB_HOST, DB_USER, DB_PWD);
+
+configWebPush();
 
 app.use(router);
 

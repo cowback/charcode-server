@@ -39,8 +39,24 @@ function listAll() {
   });
 }
 
+/**
+ * Update push information by _id in the database
+ * @param {string} id filter
+ * @returns {Promise<User>}
+ */
+function updateSubscription(id, pushInfo) {
+  return new Promise((resolve, reject) => {
+    User.update({ _id: id }, {$set: { pushInfo: pushInfo}}, (err, user) => {
+      if (err) reject(err);
+
+      resolve(user);
+    });
+  });
+}
+
 export default {
   findByMobile,
   findById,
   listAll,
+  updateSubscription
 };
