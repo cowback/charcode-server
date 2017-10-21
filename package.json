@@ -4,7 +4,7 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "babel src -d dist && node dist/app.js",
     "start:dev": "nodemon src/app.js --exec babel-node",
     "start:debug": "nodemon src/app.js --inspect --exec babel-node",
     "test": "mocha --require babel-register",
