@@ -19,6 +19,13 @@ const userSchema = new mongoose.Schema({
     type: { type: String, default: 'Point' },
     coordinates: [Number],
   },
+  pushInfo: {
+    endpoint: { type: String, unique: true },
+    keys: {
+      p256dh: { type: String },
+      auth: { type: String }
+    }
+  }
 }, { minimize: false });
 
 userSchema.pre('save', function preSafe(next) {
