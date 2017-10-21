@@ -7,7 +7,7 @@ function verifyToken(req, res) {
   authService.verifyToken(token).then(() => {
     res.status(200).json({ msg: 'Valid Token!' });
   }).catch((err) => {
-    res.status(401).json(err);
+    res.status(401).json({ err });
   });
 }
 
