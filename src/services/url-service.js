@@ -7,7 +7,7 @@ function trailingSlash(value) {
   let finalUrl = value;
   const lastChar = finalUrl.charAt(finalUrl.length - 1);
 
-  if (!lastChar && lastChar === '/') {
+  if (lastChar && lastChar !== '/') {
     finalUrl = finalUrl.concat('/');
   }
 
