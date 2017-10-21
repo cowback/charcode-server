@@ -22,8 +22,8 @@ function obtainRegisteredLocationStatus(req, res) {
       status: result,
       message: forecast.data.daily.summary,
     });
-  }).catch(() => {
-    res.status(404).json({});
+  }).catch((err) => {
+    res.status(404).json(err);
   });
 }
 
@@ -44,11 +44,11 @@ function register(req, res) {
 
   locationService.getLocationByCep(cep)
     .then((coordinates) => {
-      if (coordinates != null) {
-        newUser.location = {
-          coordinates: [coordinates.lat, coordinates.lng],
-        };
-      }
+      if (!coordinates) return new Error('CEP não encontrado.');
+
+      newUser.location = {
+        coordinates: [coordinates.lat, coordinates.lng],
+      };
 
       return newUser;
     }).then(user => new Promise((resolve, reject) => {
@@ -59,14 +59,14 @@ function register(req, res) {
       });
     }))
     .then(() => {
-      res.status(201).end();
+      res.status(201).json({});
     })
     .catch((error) => {
       if (error.name === 'MongoError' && error.code === 11000) {
         return res.status(400).json({ msg: 'Cellphone alredy exists' });
       }
 
-      return res.status(500).send(error);
+      return res.status(500).json({ error });
     });
 
   return undefined;
