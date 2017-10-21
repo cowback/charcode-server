@@ -24,7 +24,8 @@
     "jsonwebtoken": "^8.0.1",
     "mongoose": "^4.11.7",
     "morgan": "^1.8.2",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "web-push": "^3.2.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
