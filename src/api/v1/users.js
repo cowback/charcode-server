@@ -26,7 +26,7 @@ function obtainRegisteredLocationStatus(req, res) {
 
 function register(req, res) {
   req.checkBody('mobile', 'Phone cannot to be empty').notEmpty();
-  req.checkBody('mobile', 'Invalid phone number').isLength({ min: 11 });
+  req.checkBody('mobile', 'Invalid phone number').isLength({ min: 10, max: 11 });
   req.checkBody('password', 'Password cannot be empty').notEmpty();
   req.checkBody('cep', 'CEP cannot be empty').notEmpty();
   req.checkBody('cep', 'Invalid CEP').isLength({ min: 8 });
@@ -71,5 +71,5 @@ function register(req, res) {
 
 export default {
   register,
-  obtainRegisteredLocationStatus
+  obtainRegisteredLocationStatus,
 };

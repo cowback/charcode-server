@@ -23,7 +23,8 @@ function login(req, res) {
   const { mobile, password } = req.body;
   const user = new User({ mobile, password });
 
-  userService.findByMobile(user.mobile).then(userFind => new Promise((resolve, reject) => {
+  userService.findByMobile(mobile).then(userFind => new Promise((resolve, reject) => {
+    if (!userFind) return res.status(404).json({ msg: 'User not found' });
     userFind.comparePassword(user.password, (err, match) => {
       if (err) reject(err);
       if (!match) reject(new Error('The passwords do not match'));
@@ -34,11 +35,11 @@ function login(req, res) {
     const token = authService.createToken(userFind);
     res.status(200).json({ token });
   }).catch((error) => {
-    res.status(500).send(error);
+    res.status(404).json(error);
   });
 }
 
 export default {
   verifyToken,
-  login
+  login,
 };
