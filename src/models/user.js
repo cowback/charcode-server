@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     coordinates: [Number],
   },
   pushInfo: {
-    endpoint: { type: String, unique: true },
+    endpoint: { type: String },
     keys: {
       p256dh: { type: String },
       auth: { type: String },

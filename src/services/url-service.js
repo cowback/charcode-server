@@ -21,7 +21,7 @@ function trailingSlash(value) {
  */
 function mountParams(params) {
   const result = params.join('/');
-  return trailingSlash(result);
+  return result;
 }
 
 /**
