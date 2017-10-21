@@ -12,12 +12,13 @@ function verifyToken(req, res) {
 }
 
 function login(req, res) {
+  req.checkBody('mobile', 'The field mobile is required').notEmpty();
   req.checkBody('mobile', 'Please, use a valid phone number').isLength({ min: 11 });
   req.checkBody('password', 'Password cannot be empty').notEmpty();
 
   const errors = req.validationErrors();
   if (errors) {
-    res.status(400).send(errors);
+    res.status(400).json(errors);
   }
 
   const { mobile, password } = req.body;

@@ -16,11 +16,14 @@ function obtainRegisteredLocationStatus(req, res) {
       units: 'si',
     });
   }).then((forecast) => {
-    const result = weatherService.analyze(forecast.data);
+    const result = weatherService.rankLocationForecast(forecast.data);
 
-    res.json(result);
+    res.json({
+      status: result,
+      message: forecast.data.daily.summary,
+    });
   }).catch(() => {
-    res.status(404).end();
+    res.status(404).json({});
   });
 }
 
