@@ -1,10 +1,6 @@
-import { Router } from 'express';
-
 import User from '../../models/user';
 import authService from '../../services/auth-service';
 import userService from '../../services/user-service';
-
-const router = Router();
 
 function verifyToken(req, res) {
   const token = req.get('authorization');
@@ -42,8 +38,7 @@ function login(req, res) {
   });
 }
 
-router.route('/auth')
-  .get(verifyToken)
-  .post(login);
-
-export default router;
+export default {
+  verifyToken,
+  login
+};

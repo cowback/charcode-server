@@ -6,9 +6,19 @@ import subscription from './subscription';
 
 const router = Router();
 
-router.use(authentication);
-router.use(subscription);
+router.route('/auth')
+  .get(authentication.verifyToken)
+  .post(authentication.login);
+
+router.route('/user')
+  .post(users.register);
+
 router.use(auth);
-router.use(users);
+
+router.route('/user/status')
+  .get(users.obtainRegisteredLocationStatus);
+
+router.route('/push/subscribe')
+  .post(subscription.subscribe);
 
 export default router;

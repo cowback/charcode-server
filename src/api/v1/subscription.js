@@ -1,7 +1,4 @@
-import { Router } from 'express';
 import subscriptionService from '../../services/subscription-service';
-
-const router = Router();
 
 function subscribe(req, res) {
   req.checkBody('pushInfo', 'Please, send a valid subscription').exists();
@@ -17,6 +14,6 @@ function subscribe(req, res) {
   });
 }
 
-router.route('/subscribe').post(subscribe);
-
-export default router;
+export default {
+  subscribe
+};

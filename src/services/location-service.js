@@ -1,7 +1,7 @@
 import axios from 'axios';
 import urlService from './url-service';
 
-const host = 'http://google.com/maps/api/geocode/';
+const host = 'https://google.com/maps/api/geocode/';
 
 /**
  * Return user lat and lng given CEP
