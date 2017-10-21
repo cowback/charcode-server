@@ -1,7 +1,7 @@
 import authService from '../services/auth-service';
 
 export default function authenticated(req, res, next) {
-  const token = req.headers['x-access-token'];
+  const token = req.get('authorization');
 
   if (!token) {
     res.status(403).json({
