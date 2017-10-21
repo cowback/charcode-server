@@ -1,9 +1,7 @@
 import axios from 'axios';
 import urlService from './url-service';
 
-const host = 'https://google.com/maps/api/geocode/';
-const secret = 'AIzaSyAVpfn5UfeNrPrP8K62dn3U3y-9XCWfy_0'; //process.env.GOOGLE_SECRET;
-
+const host = 'http://google.com/maps/api/geocode/';
 
 /**
  * Return user lat and lng given CEP
@@ -12,7 +10,8 @@ const secret = 'AIzaSyAVpfn5UfeNrPrP8K62dn3U3y-9XCWfy_0'; //process.env.GOOGLE_S
  * @returns {Promise<{}>}
  */
 function getLocationByCep(cep) {
-  const uri = urlService.mountUrl(host, ['json'], { address: cep, sensor: false, key: secret });
+  const { GOOGLE_SECRET } = process.env;
+  const uri = urlService.mountUrl(host, ['json'], { address: cep, sensor: false, key: GOOGLE_SECRET });
 
   return axios.get(uri).then((response) => {
     if (response.data.status === 'ZERO_RESULTS') {
