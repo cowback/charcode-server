@@ -23,9 +23,9 @@ const userSchema = new mongoose.Schema({
     endpoint: { type: String, unique: true },
     keys: {
       p256dh: { type: String },
-      auth: { type: String }
-    }
-  }
+      auth: { type: String },
+    },
+  },
 }, { minimize: false });
 
 userSchema.pre('save', function preSafe(next) {

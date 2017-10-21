@@ -7,8 +7,8 @@ import subscription from './subscription';
 const router = Router();
 
 router.use(authentication);
+router.use(subscription);
 router.use(auth);
 router.use(users);
-router.use(subscription);
 
 export default router;
