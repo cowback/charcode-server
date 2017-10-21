@@ -15,6 +15,16 @@ function findByMobile(mobile) {
   });
 }
 
+function findById(id) {
+  return new Promise((resolve, reject) => {
+    User.findById(id, (err, user) => {
+      if (err) reject(err);
+
+      resolve(user);
+    });
+  });
+}
+
 /**
  * List all the users registered in the database
  * @returns {Promise<User[]>}
@@ -46,6 +56,7 @@ function updateSubscription(id, pushInfo) {
 
 export default {
   findByMobile,
+  findById,
   listAll,
   updateSubscription
 };
