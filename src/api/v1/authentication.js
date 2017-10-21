@@ -26,6 +26,7 @@ function login(req, res) {
 
   userService.findByMobile(mobile).then(userFind => new Promise((resolve, reject) => {
     if (!userFind) return res.status(404).json({ msg: 'User not found' });
+
     userFind.comparePassword(user.password, (err, match) => {
       if (err) reject(err);
       if (!match) reject(new Error('The passwords do not match'));
@@ -36,7 +37,7 @@ function login(req, res) {
     const token = authService.createToken(userFind);
     res.status(200).json({ token });
   }).catch((error) => {
-    res.status(400).json(error);
+    res.status(400).json({ error });
   });
 }
 
